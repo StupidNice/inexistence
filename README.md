@@ -1,246 +1,313 @@
-> 这只是一个不会 shell、不会 Linux 的刷子无聊写着玩的产物 ...
-  
-不保证本脚本能正常使用，翻车了不负责；上车前还请三思。  
-本介绍的内容不会及时更新；目前最新的脚本在界面上和截图里有一点不一样  
-如果 `wget` 时出错，请先运行   `alias wget="wget --no-check-certificate"`  
-
--------------------
 # Inexistence
 
+> 警告：不保证本脚本能正常使用，翻车了不负责；上车前还请三思  
+> 作者是个菜鸡，没学过程序，本脚本的不少内容是 依样画葫芦 + 抄袭 + 百度/谷歌得来的  
+> 建议重装完系统后安装本脚本，非全新安装的情况下翻车几率更高  
 
-#### 使用方法
-``` 
-wget https://github.com/Aniverse/inexistence/raw/master/inexistence.sh
+
+本文内容不会及时更新；目前最新的脚本在界面上和截图里有一些不一样  
+
+
+## Usage
+
+```
+bash -c "$(wget --no-check-certificate -qO- https://github.com/Aniverse/inexistence/raw/master/inexistence.sh)"
+```
+```
+wget --no-check-certificate -qO inexistence.sh https://github.com/Aniverse/inexistence/raw/master/inexistence.sh
 bash inexistence.sh
 ```
-#### 安装介绍
 
-![引导界面](https://github.com/Aniverse/filesss/raw/master/Images/inexistence.01.png)
+## Installation Guide
 
-检查是否 root，检查系统是不是 `Ubuntu 16.04、Debian 8、Debian 9`  
-如果没用 root 权限运行或者系统不是如上的三个，脚本会自动退出
+![脚本参数](https://github.com/Aniverse/inexistence/raw/master/03.Files/images/inexistence.09.png)
 
-![安装时的选项](https://github.com/Aniverse/filesss/raw/master/Images/inexistence.02.png)
+脚本现已支持自定义参数，具体参数的说明在下文中有说明  
 
-1. **账号密码**  
+![引导界面](https://github.com/Aniverse/inexistence/raw/master/03.Files/images/inexistence.01.png)
+
+检查是否以 root 权限来运行脚本，检查公网 IP 地址与系统参数  
+
+![升级系统](https://github.com/Aniverse/inexistence/raw/master/03.Files/images/inexistence.02.1.png)
+![升级系统](https://github.com/Aniverse/inexistence/raw/master/03.Files/images/inexistence.02.2.png)
+
+支持 `Ubuntu 16.04 / 18.04`、`Debian 8 / 9` ；`Ubuntu 14.04`、`Debian 7` 可以选择用脚本升级系统；其他系统不支持  
+使用 ***`-s`*** 参数可以跳过对系统是否受支持的检查，不过这种情况下脚本能不能正常工作就是另一回事了  
+
+![系统信息](https://github.com/Aniverse/inexistence/raw/master/03.Files/images/inexistence.03.png)
+
+显示系统信息以及注意事项  
+
+![安装时的选项](https://github.com/Aniverse/inexistence/raw/master/03.Files/images/inexistence.04.png)
+
+1. ***是否升级系统***  
+如果你的系统是 `Debian 7` 或 `Ubuntu 14.04`，你可以用本脚本来升级到 `Debian 8／9` 或 `Ubuntu 16.04／18.04`  
+理论上整个升级过程应该是无交互的，应该不会碰到什么问你 Yes or No 的问题  
+升级完后会直接执行重启命令，重启完后你需要再次运行脚本来完成软件的安装  
+
+
+2. ***账号密码***  
+**`-u <username> -p <password>`**  
 你输入的账号密码会被用于各类软件以及 SSH 的登录验证  
-用户名要求字母开头，长度 4-16 位；密码要求需要同时包含字母和数字，长度 9-16 位  
+用户名需要以字母开头，长度 4-16 位；密码最好同时包含字母和数字，长度至少 8 位
+恩，目前我话是这么说，但脚本里还没有检查账号密码是否合乎要求，所以还是自己注意点吧  
 
-2. **系统源**  
-大多数情况下无需换源；某些盒子默认的源可能有点问题，此时需要启用这个选项  
 
-3. **线程数量**    
-编译时使用几个线程进行编译。一般来说独服用默认的选项，也就是全部线程都用于编译就行了  
+3. ***系统源***  
+**`--apt-yes`**、**`--apt-no`**  
+其实大多数情况下无需换源；但某些盒子默认的源可能有点问题，所以我干脆做成默认都换源了  
+
+
+4. ***线程数量***  
+**`--mt-single`**、**`--mt-double`**、**`--mt-half`**、**`--mt-max`**  
+编译时使用几个线程进行编译。一般来说用默认的选项，也就是全部线程都用于编译就行了  
 某些 VPS 可能限制下线程数量比较好，不然可能会翻车  
-下面四大客户端的安装，指定版本的一般都是编译安装，安装速度慢但可以任选版本  
-选择 `30` 是从系统源里安装，安装速度快但版本往往比较老，且无法指定版本  
-选择 `40` 是从 PPA 安装  **( 注意：不支持 Debian 系统 )**  同样无法指定版本但一般软件都是最新版  
 
-4. **qBittorrent**  
-选择 4.0.2 版本的话，在 `Debian 9` 下用编译安装，在 `Ubuntu 16.04` 下从 PPA 安装  
-在 `Debian 8` 下由于不满足 qt 5.5.1 的依赖要求，无法完成编译，会强制选择 `3.3.16` 版代替  
-由于目前不少站点还不支持新版本，因此还是建议使用 3.3.11 或 3.3.14  
 
-5. **Deluge**  
-Deluge 还会安装一些第三方插件  
-`ltconfig` 是一个调整 `libtorrent-rasterbar` 参数的插件，在安装完后就启用了 `High Performance Seed` 模式  
-`Stats` 和 `TotalTraffic` 需要 GtkUI 才能显示出来，分别可以显示速度曲线和 Deluge 的总传输流量  
-`YaRSS2` 是用于 RSS 的插件；`LabelPlus` 是加强版的标签管理；这两个也需要 GtKUI  
-`AutoRemovePlus` 是自动删种插件，支持 WebUI 与 GtKUI  
+5. ***安装时是否创建 swap***  
+**`--swap-yes`**，**`--swap-no`**  
+一些内存不够大的 VPS 在编译安装时可能物理内存不足，使用 swap 可以解决这个问题  
+实测 1C1T 1GB 内存 的 Vultr VPS 安装 Flood 不开启 swap 的话会失败，开启就没问题了  
+目前对于物理内存小于 1926MB 的都默认启用 swap，如果内存大于这个值那么你根本就不会看到这个选项……    
 
-6. **libtorrent-rasterbar**  
-不知道选什么版本的话选默认的 `2` 就可以了  
-这里有两个隐藏选项：选 `3` 是 `RC_1_1` 分支；选 `4` 是从系统源里安装  
-这两个选项都存在一些 bug 且似乎无法修复，因此除非你知道你在做什么不然不要选 `3` 或 `4`  
 
-7. **rTorrent + ruTorrent**  
-这部分是调用我修改的 `rtinst` 来安装的（SSH 端口 22，不关闭 root 登陆，安装 h5ai）  
-还会安装了一些插件和 `club-QuickBox` `MaterialDesign` 这两个主题  
-`Filemanager` 插件可以在 ruTorrent 上删除文件、创建压缩包、生成 mediaino 和截图  
-`ruTorrent Mobile` 插件可以优化 ruTorrent 在手机上的显示效果  
-`spectrogram` 插件可以在 ruTorrent 上获取音频文件的频谱  
-0.9.4 支持 IPv6 用的是打好补丁的版本，属于修改版客户端  
-0.9.6 用的是最新的 feature-bind 分支，原生支持 IPv6  
-此外如果系统是 Debian 9 的话，rTorrent 版本强制会指定成 0.9.6（因为其他版本不支持）  
+6. ***客户端安装选项***  
+**`--de ppa --qb 3.3.11 --rt 0.9.4 --tr repo`**  
+下面四大客户端的安装，指定版本的都是编译安装，安装速度相对较慢但可以任选版本  
+选择 `30` 是自己指定另外的版本来安装  **（不会检查这个版本是否可用；可能会翻车）**  
+选择 `40` 是从系统源里安装，安装速度快但版本往往比较老，且无法指定版本  
+选择 `50` 是从 PPA 安装( Debian 不支持所以不会显示)，同样无法指定版本不过一般软件都是最新版  
 
-8. **Transmission**  
-Transmission 一般哪个版本都能用并且没多大差别，因此默认选择从仓库里安装  
-Debian 9 下编译安装不成功，因此强制指定从仓库里安装 2.92 版  
-此外还会安装修改版的 WebUI，更易用  
 
-9. **Flexget**  
+7. ***qBittorrent***  
+**`--qb '3.3.11 (Skip hash check)'`**、**`--qb 3.3.16`**、**`--qb ppa`**、**`--qb No`**  
+`Debian 8` 下安装 qBittorrent 4.0 目前还在测试阶段……  
+隐藏选项 21，是可以在 WebUI 下跳过校验的 3.3.11 版本  
+**使用修改版客户端、跳过校验 存在风险，后果自负**  
+
+
+8. ***Deluge***  
+**`--de '1.3.15 (Skip hash check)'`**、**`--de 1.3.9`**、**`--de repo`**、**`--de No`**  
+默认选项为从源码安装 1.3.15  
+此外还会安装一些实用的 Deluge 第三方插件：  
+- `AutoRemovePlus` 是自动删种插件，支持 WebUI 与 GtkUI  
+- `ltconfig` 是一个调整 `libtorrent-rasterbar` 参数的插件，在安装完后就启用了 `High Performance Seed` 模式  
+- `Stats`、`TotalTraffic`、`Pieces`、`LabelPlus`、`YaRSS2`、`NoFolder` 都只能在 GUI 下设置，WebUI 下无法显示  
+- `Stats` 和 `TotalTraffic`、`Pieces` 分别可以实现速度曲线和流量统计、区块统计  
+- `LabelPlus` 是加强版的标签管理，支持自动根据 Tracker 对种子限速，刷 Frds 可用；也只有 GUI 可用    
+- `YaRSS2` 是用于 RSS 的插件；`NoFolder` 可以让 Deluge 在下载种子时不生成文件夹，辅种可用  
+隐藏选项 11-15 ，分别对应 1.3.5-1.3.9 版本  
+隐藏选项 21，是可以跳过校验、全磁盘预分配的 1.3.15 版本  
+**使用修改版客户端、跳过校验 存在风险，后果自负**  
+
+
+9. ***libtorrent-rasterbar***  
+本来这里是有个询问 libtorrent-rasterbar 版本的，现在直接移除了  
+现在脚本安装的 Deluge 和 qBittorrent 都会使用来自 RC_1_0 分支的 1.0.11 版，可以正确地汇报双栈 IP 地址  
+
+
+10. ***rTorrent***  
+**`--rt 0.9.4`**、**`--rt 0.9.3 --enable-ipv6`**、**`--rt No`**  
+这部分是调用我修改的 [rtinst](https://github.com/Aniverse/rtinst) 来安装的，默认选项为安装原版 0.9.4  
+- 安装 rTorrent，ruTorrent，nginx，ffmpeg 3.4.2，rar 5.5.0，h5ai 目录列表程序  
+- 0.9.2-0.9.4 支持 IPv6 用的是打好补丁的版本，属于修改版客户端  
+- 0.9.6 支持 IPv6 用的是 feature-bind 分支，原生支持 IPv6（Debian 9 强制使用此版本）  
+- 不修改 SSH 端口，FTP 使用 `vsftpd`，端口号 21，监听 IPv6  
+- 设置了 Deluge、qBittorrent、Transmission WebUI 的反代  
+- ruTorrent 版本为来自 master 分支的 3.8 版，此外还安装了如下的插件和主题  
+- `club-QuickBox` `MaterialDesign` 第三方主题  
+- `AutoDL-Irssi` （原版 rtinst 自带）  
+- `Filemanager` 插件可以在 ruTorrent 上管理文件、右键创建压缩包、生成 mediainfo 和截图  
+- `ruTorrent Mobile` 插件可以优化 ruTorrent 在手机上的显示效果（不需要的话可以手动禁用插件）  
+- `spectrogram` 插件可以在 ruTorrent 上获取音频文件的频谱  
+- `Fileshare` 插件创建有时限、可自定义密码的文件分享链接  
+- `Mediastream` 插件可以在线观看盒子的视频文件  
+
+
+11. **Flood**  
+**`--flood-yes`**、**`--flood-no`**  
+选择不安装 rTorrent 的话这个选项不会出现  
+Flood 是 rTorrent 的另一个 WebUI，界面美观，加载速度快，不过功能上不如 ruTorrent  
+
+
+12. ***Transmission***  
+**`--tr repo`**、**`--tr ppa`**、**`--tr 2.93 --tr-skip`**、**`--tr No`**  
+Transmission 默认选择从仓库里安装，节省时间（ban 2.93 以前版本的站点也不是很多）  
+此外还会安装 [美化版的 WebUI](https://github.com/ronggang/transmission-web-control)，更方便易用  
+隐藏选项 11 和 12，分别对应可以跳过校验、无文件打开数限制的 2.92、2.93 版本  
+**使用修改版客户端、跳过校验 存在风险，后果自负**  
+
+
+13. ***Remote Desktop***  
+**`--rdp-vnc`**、**`--rdp-x2go`**、**`--rdp-no`**  
+远程桌面选项，默认不安装  
+远程桌面可以完成一些 CLI 下做不了或者 CLI 实现起来很麻烦的操作，比如 BD-Remux，wine uTorrent  
+VNC 目前在 Debian 下安装完后无法连接，建议 Debian 系统用 X2Go 或者另外想办法安装 VNC  
+
+
+14. ***wine & mono***  
+**`--wine-yes`**、**`--wine-no`**  
+这两个默认也是不安装的  
+`wine` 可以实现在 Linux 上运行 Windows 程序，比如 DVDFab、uTorrent  
+`mono` 是一个跨平台的 .NET 运行环境，BDinfoCLI、Jackett、Sonarr 等软件的运行都需要 mono   
+
+
+15. ***Some additional tools***  
+**`--tools-yes`**、**`--tools-no`**  
+安装最新版本的 ffmpeg、mediainfo、mkvtoolnix、eac3to、bluray 脚本、mktorrent  
+- `mediainfo` 用最新版是因为某些站发种填信息时有这方面的要求，比如 HDBits  
+- `mkvtoolnix` 主要是用于做 BD-Remux  
+- `ffmpeg` 对于大多数盒子用户来说主要是拿来做视频截图用，采用 git 的 Static Builds  
+- `eac3to` 需要 wine 来运行，做 remux 时用得上  
+- `mktorrent` 由于 1.1 版的实际表现不是很理想，因此选择从系统源安装 1.0 版本  
+- `BDinfoCLI` 已经自带了，需要 mono 来运行  
+- `bluray` 其实也自带了，不过有的时候我会忘记同步这里的版本，所以还是更新下  
+
+
+16. ***Flexget***  
+**`--flexget-yes`**、**`--flexget-no`**  
 默认不安装；我启用了 daemon 模式和 WebUI，还预设了一些模板，仅供参考  
-因为配置文件里的 passkey 需要用户自己修改，所以我也没有启用 schedules 或 crontab，需要的话自己打开  
+因为配置文件里的 passkey 需要用户自己修改，所以我也没有启用 schedules 或 crontab，需要的话自己设置  
 
-10. **rclone**  
+
+17. ***rclone***  
+**`--rclone-yes`**、**`--rclone-no`**  
 默认不安装。安装好后自己输入 rclone config 进行配置  
 
-11. **BBR**  
-会检测你当前的内核版本，大于 4.9 是默认不安装，高于 4.9 是默认启用BBR（不更换内核）  
-由于 BBR 需要 4.9 以上的内核，而更换内核或多或少是有点危险性的操作，因此需要考虑一下  
-不过针对常见的 Online.net 的独服我是准备了五个 firmware，应该没什么问题  
-BBR 的安装调用了秋水逸冰菊苣的脚本，会安装最新版本的内核  
 
-12. **系统设置**  
-默认不启用；主要是修改时区为 UTC+8、设置 `alias`、编码设置为 UTF-8、提高系统文件打开数  
-其实第一次运行脚本的话我还是推荐设置下这个，以后操作也方便点  
+18. ***BBR***  
+**`--bbr-yes`**、**`--bbr-no`**  
+（如果你想安装魔改版 BBR 或 锐速，请移步到 [TrCtrlProToc0l](https://github.com/Aniverse/TrCtrlProToc0l) 脚本）  
+会检测你当前的内核版本，大于 4.9 是默认不安装新内核与 BBR，高于 4.9 是默认直接启用BBR（不安装新内核）  
+据说 4.12 存在 VirtIO 方面的 bug，4.13 及以上无法适配南琴浪版以外的魔改 BBR，因此采用了 4.11.12 内核  
+注意：更换内核或多或少是有点危险性的操作，有时候会导致无法正常启动系统  
+不过针对常见的 Online／OneProvider Paris 的独服我是准备了五个 firmware，应该没什么问题  
 
-![确认信息是否有误](https://github.com/Aniverse/filesss/raw/master/Images/inexistence.03.png)
+
+19. ***系统设置***  
+**`--tweaks-yes`**、**`--tweaks-no`**  
+默认启用，具体操作如下：  
+- 修改时区为 UTC+8  
+- 语言编码设置为 en.UTF-8  
+- 设置 `alias` 简化命令  
+- 提高系统文件打开数  
+- 修改 screen 设置  
+- 释放最大分区的保留空间  
+
+
+![确认信息](https://github.com/Aniverse/inexistence/raw/master/03.Files/images/inexistence.05.png)
 
 如果你哪里写错了，先退出脚本重新选择；没什么问题的话就敲回车继续  
+使用 ***`-y`*** 可以跳过开头的信息确认和此处的信息确认，配合其他参数可以做到无交互安装  
 
-![安装完成](https://github.com/Aniverse/filesss/raw/master/Images/inexistence.04.png)
+![使用参数](https://github.com/Aniverse/inexistence/raw/master/03.Files/images/inexistence.10.png)
+
+
+
+
+-------------------
+
+
+
+![安装完成界面](https://github.com/Aniverse/inexistence/raw/master/03.Files/images/inexistence.06.png)
 
 安装完成后会输出各类 WebUI 的网址，以及本次安装花了多少时间，然后问你是否重启系统（默认是不重启）  
 
-在我的10欧（i3 2100／4GB／2×1TB HW RAID0）上安装这些花了16分钟。感觉比自己手动编译安装还是更省时间的  
+![安装失败界面](https://github.com/Aniverse/inexistence/raw/master/03.Files/images/inexistence.07.png)
+
+如果报道上出现了偏差，会提示你如何查看日志（报错时请务必附上日志！）  
+
+![WebUI](https://github.com/Aniverse/inexistence/raw/master/03.Files/images/inexistence.08.png)
+
+最后打开浏览器检查下各客户端是否都能正常访问  
+
+
 
 #### To Do List
 
-- **安装 VNC**  
-打算把 mono 和 wine 也加上  
-- **发种相关**  
-安装 ffmepg、x264、x265、mediainfo、mkvtoolnix  
-- **Flexget 模板**  
-补充更多的站点预设  
-- **对于账号密码有效性的检查**  
-目前仅仅是在界面上提示用户该怎么填写，但不会进行真正的检查  
+- **Password**  
+修改 SSH、Deluge、ruTorrent、Transmission、qBittorrent、Flexget 密码的脚本  
+实现起来不难，主要是现在没空做  
+
+- **Version**  
+升级、降级 Deluge、ruTorrent、Transmission、qBittorrent 版本的脚本  
+
+- **Box**  
+考虑把各种客户端的安装每个都做成单独的脚本，然后在 `inexistence`、`banben` 中需要安装的时候直接调用  
+这个思路是从 QuickBox 那边学到的，最后的命令大概这样子  
+`box install vnc`、`box purge qbittorrent`  
 
 #### Under Consideration
 
-- **不使用 root 运行**  
-将 Tr/De/Qb 的运行用户换成普通用户  
+- **rTorrent installation rewrite**  
+说是 rewrite 其实我就是想把 `rtinst` 整合到 `inexistence` 体系里  
+
+- **Multi-user**  
+1. 将 Tr/De/Qb 的运行用户从 root 换成普通用户  
+2. 多用户模式，可以直接 adduser 并设置好 de/qb/rt/tr/flexget  
 
 #### Known Issues
 
-- **(目前已知的我都修复了，欢迎提交 bug)**  
-有些修不好的问题我选择取消冲突的选项  
+- **Debian 下 VNC 可能连不上**  
+求大佬们赐教  
 
--------------------
-## BD Upload
+#### 碎碎念
 
-#### 下载与安装
-```
-wget -O /usr/local/bin/bdupload https://github.com/Aniverse/inexistence/raw/master/00.Installation/script/bdupload
-chmod +x /usr/local/bin/bdupload
-```
-#### 运行
-```
-bdupload
-```
-#### 介绍
+其实 `mingling`、`box` 这些脚本做得再好，对于一般人而言也没有 QuickBox 那个 Dashboard 好，毕竟那个不需要用 SSH  
 
-转发蓝光原盘时可以使用的一个脚本；目前不支持 UltraHD Blu-ray
 
-![检查是否缺少软件](https://github.com/Aniverse/filesss/raw/master/Images/bdupload.01.png)
 
-一开始脚本会检查是否存在缺少的软件，如缺少会提示你安装，如果选择不安装的话脚本会退出  
 
-![正常运行界面](https://github.com/Aniverse/filesss/raw/master/Images/bdupload.02.png)
 
-目前可以实现以下功能：  
 
-- **判断是 BDISO 还是 BDMV**  
-输入一个完整的路径，判断是不是文件夹；*是文件夹的话认为是 BDMV，不是文件夹的话认为是 BDISO*  
-（所以如果你的 BDISO 是放在一个文件夹里，你输入了文件夹的路径的话会识别成 BDMV）  
 
-- **自动挂载镜像**  
-如果是 BDISO，会挂载成 BDMV，并问你是否需要对这个挂载生成的文件夹重命名（有时候 BDISO 的标题就是 DISC1 之类的，重命名下可能更好）  
-全部操作完成后 BDISO 会自动解除挂载  
 
-- **截图**  
-自动寻找 BD 里体积最大的 m2ts 截 10 张 png 图。默认用 1920×1080 的分辨率，也可以手动填写分辨率  
-指定 1920×1080 分辨率是因为某些原盘用 ffmepg 直接截图的话截出来的图是 1440 ×1080 的，不符合某些站的要求  
-自定义分辨率主要是考虑到有些原盘的分辨率不是 1080 （有些蓝光原盘甚至是 480i ）  
 
-- **扫描 BDinfo**  
-默认是自动扫描第一个最长的 mpls；也可以手动选择扫描哪一个 mpls  
-BDinfo 会有三个文件，一个是原版的，一个是 Main Summary，一个是 Quick Summary  
-一般而言发种写个 Quick Summary 就差不多了  
-
-- **生成缩略图**  
-这个功能默认不启用；其实一般也用不上  
-
-- **制作种子**  
-针对 BDISO，默认选择重新做种子；针对 BDMV，默认选择不重新做种子 
-
-![输出结果](https://github.com/Aniverse/filesss/raw/master/Images/bdupload.03.png)
-需要注意的是，脚本里挂载、输出文件都是指定了一个固定的目录`/etc/inexistence`  
-一般情况下你需要 root 权限才能访问这个目录  
-
-#### To Do List
-
-- **判断操作是否成功**  
-目前操作中哪一步翻车了也不会有翻车了的提醒    
-- **自动上传到 Google Drive**  
-调用 rclone 来完成，需要你自己设置好 rclone，且在脚本里设置 rclone remote path  
-（我会把这个设置项放在脚本开头的注释里）  
-
-#### Under Consideration
-
-- **完善对于输入路径的判断**  
-对于文件夹，检查是不是里面包含着单个 BDISO，或者包不包含 BDMV 这个文件夹  
-对于非文件夹，检查文件后缀名是不是 ISO  
-- **自动检测分辨率**  
-自动使用AR后的分辨率  
-- **自动上传到 ptpimg**  
-调用 ptpimg_uploader 来完成，脚本跑完后会输出 ptpimg 的链接。运行之前你需要自己配置好 ptpimg_uploader  
-
--------------------
 ## mingling
-
-#### 下载与安装
-```
-wget -O /usr/local/bin/mingling https://github.com/Aniverse/inexistence/raw/master/00.Installation/script/mingling
-chmod +x /usr/local/bin/mingling
-```
-
-#### 运行
-```
-mingling
-```
-
-#### 介绍
 
 方便刷子们使用的一个脚本，有很多功能如果你没安装 `inexistence` 的话是用不了的  
 此外有些功能还没做完  
-不做具体的介绍了，自己看图吧  
+不做具体的介绍了，直接看图吧  
 
-![mingling.00](https://github.com/Aniverse/filesss/raw/master/Images/mingling.00.png)
-![mingling.01](https://github.com/Aniverse/filesss/raw/master/Images/mingling.01.png)
-![mingling.02](https://github.com/Aniverse/filesss/raw/master/Images/mingling.02.png)
-![mingling.03](https://github.com/Aniverse/filesss/raw/master/Images/mingling.03.png)
-![mingling.04](https://github.com/Aniverse/filesss/raw/master/Images/mingling.04.png)
-![mingling.05](https://github.com/Aniverse/filesss/raw/master/Images/mingling.05.png)
-![mingling.06](https://github.com/Aniverse/filesss/raw/master/Images/mingling.06.png)
-![mingling.07](https://github.com/Aniverse/filesss/raw/master/Images/mingling.07.png)
-![mingling.08](https://github.com/Aniverse/filesss/raw/master/Images/mingling.08.png)
+![mingling.00](https://github.com/Aniverse/inexistence/raw/master/03.Files/images/mingling.00.png)
+![mingling.01](https://github.com/Aniverse/inexistence/raw/master/03.Files/images/mingling.01.png)
+![mingling.02](https://github.com/Aniverse/inexistence/raw/master/03.Files/images/mingling.02.png)
+![mingling.03](https://github.com/Aniverse/inexistence/raw/master/03.Files/images/mingling.03.png)
+![mingling.04](https://github.com/Aniverse/inexistence/raw/master/03.Files/images/mingling.04.png)
+![mingling.05](https://github.com/Aniverse/inexistence/raw/master/03.Files/images/mingling.05.png)
+![mingling.06](https://github.com/Aniverse/inexistence/raw/master/03.Files/images/mingling.06.png)
+![mingling.07](https://github.com/Aniverse/inexistence/raw/master/03.Files/images/mingling.07.png)
+![mingling.08](https://github.com/Aniverse/inexistence/raw/master/03.Files/images/mingling.08.png)
+
+#### Known Issues
+- **有时候客户端操作菜单按了却没用**  
 
 #### To Do List
-- 补充 alias 中的命令说明
-- 完善说明文档
-- 添加 AutoDL-Irssi 的开关
-- 添加锐速的开关与状态检测
-- 完成脚本菜单的功能
+- **自动检查脚本是否存在更新？**  
+但考虑到新版本和老版本可能不适配，这个不一定会做  
+- **完善说明文档**  
 
- -------------------
-## bdjietu
 
-这个是单独抽出来的，用于给 BD 截图的脚本  
-输入 BDMV 的路径后会自动从中找出最大的 m2ts 文件，截图 10 张到特定的目录  
-其实就是用 ffmepg 来截图，不过指定了 1920x1080 的分辨率和输出的路径  
- 
- ![bdjietu输出结果](https://github.com/Aniverse/filesss/raw/master/Images/bdjietu.01.png)
- 
-  -------------------
-## bdinfo
+
+
+
+
+
+
+
+
+
+
+
+
+## BDinfo
 
 这个是单独抽出来的，用于给 BDMV 扫描 BDinfo 的脚本  
 运行完以后可以直接在 SSH 上输出 BDinfo Quick Summary  
 
 ![bdinfo输出结果](https://github.com/Aniverse/filesss/raw/master/Images/bdinfo.01.png)
 
-如果没有 mono 或 BDinfo-Cli 的话，可以先运行 `bdupload` 脚本安装需要的软件  
+如果没有 mono 或 BDinfo-Cli 的话，可以先运行 `bluray` 或者 `inexistence` 脚本安装需要的软件  
 
 ![bdinfo运行过程](https://github.com/Aniverse/filesss/raw/master/Images/bdinfo.02.png)
 
@@ -248,23 +315,43 @@ mingling
 
 ![bdinfo输出结果](https://github.com/Aniverse/filesss/raw/master/Images/bdinfo.03.png)
  
-BDinfo 输出结果彩色是因为使用了 lolcat，如果你没安装 lolcat 的话是不会有彩色的  
+BDinfo 输出结果看起来五颜六色是因为使用了 lolcat，如果你没安装 lolcat 的话是不会有彩色的  
  
-  -------------------
-## ipv6
+
+
+
+
+
+
+## IPv6
 
 用于配置 IPv6 的脚本  
+如果第一次运行不成功，可以试着再跑一遍  
+如果你跑了 N 遍都不成功，有一种可能性是你那个 IPv6 本身不可用  
 
 ``` 
-wget https://github.com/Aniverse/inexistence/raw/master/00.Installation/script/dalao/ipv6.sh
-bash ipv6.sh  
-bash ipv6.sh [interface] [address] [subnet] [DUID]  
-bash ipv6.sh enp2s0 2001:3bc8:2490:: 48 00:03:00:02:19:c4:c9:e3:75:26  
+bash -c "$(wget -qO- https://github.com/Aniverse/inexistence/raw/master/00.Installation/script/ipv6)"
+``` 
+
+可以在命令里写上 IPv6 的信息（复制粘贴更方便一些）  
+第四项的网卡可以让脚本自动检测，也可以手动指定  
+```
+wget https://github.com/Aniverse/inexistence/raw/master/00.Installation/script/ipv6  
+bash ipv6 [address] [subnet] [DUID] [interface]  
+bash ipv6 2001:3bc8:2490:: 48 00:03:00:02:19:c4:c9:e3:75:26 enp2s0  
+bash ipv6 [address] [subnet] [DUID]  
+bash ipv6 2001:cb6:2521:240:: 57 00:03:00:01:d3:3a:15:b4:43:ad  
 ```
 
 ![ipv6.01](https://github.com/Aniverse/filesss/raw/master/Images/ipv6.01.png)
 
-  -------------------
+
+
+
+
+
+
+
 ## xiansu
 
 用于给盒子限制全局上传速度的脚本，适用于保证带宽有限的盒子，比如 Online.net 的一些独服    
@@ -279,53 +366,135 @@ xiansu eth0 300
 
 ![xiansu.01](https://github.com/Aniverse/filesss/raw/master/Images/xiansu.01.png)
 
-  -------------------
+
+
+
+
+
+
+
 ## jietu
 
 用于截图和生成 mediainfo 的脚本，适合非原盘类的视频  
-其实一般情况下用 ruTorrent 的插件就可以完成这些任务，不需要用这个脚本  
+输入文件名则对这个文件进行操作，输入文件夹则寻找该文件夹内最大的文件当做视频文件进行操作  
+你可以指定分辨率进行截图，也可以不写分辨率让脚本自动计算 DAR 后的分辨率  
+比如有一张 DVD 的原始分辨率是 720x576，DAR 是 16:9，那么脚本就会采用 1024x576 来截图  
+
 ``` 
 jietu [path/to/file] [resloution]  
-jietu "/home/aniverse/[VCB-Studio][Saenai Heroine no Sodatekata Flat][01][Ma10p_1080p][x265_flac_aac]" 1920x1080
+jietu "/home/aniverse/[VCB-Studio][Saenai Heroine no Sodatekata Flat][01][Ma10p_1080p][x265_flac_aac]" 1920x1080  
+jietu [path/to/folder]  
+jietu "/home/aniverse/deluge/download/Your Name (2016) PAL DVD9"  
 ```
 
-  -------------------
+![jietu.01](https://github.com/Aniverse/filesss/raw/master/Images/jietu.01.png)
 
-还有一些脚本，比如 ``guazai`、`zuozhong`，在此不作介绍了，基本看名字都知道是干什么用的了  
-这些脚本在 `inexistence` 脚本里启用了 system tweaks 后都会安装  
 
-  -------------------
-### Something else
 
-有 bug 的话请告诉我 **但不保证能解决**  有意见或者改进也欢迎告知  
+
+
+
+
+
+## guazai
+
+用于把 ISO 挂载成文件夹的脚本，使用的是 mount 命令，因此需要 root 权限才能运行  
+
+
+![guazai.03](https://github.com/Aniverse/filesss/raw/master/Images/guazai.03.png)
+
+`guazai` 后输入文件名则挂载那个文件  
+
+![guazai.01](https://github.com/Aniverse/filesss/raw/master/Images/guazai.01.png)
+![guazai.02](https://github.com/Aniverse/filesss/raw/master/Images/guazai.02.png)
+
+`guazai` 后输入路径则会寻找该路径下的所有 ISO 进行挂载  
+直接输入 `guazai`，会在当前目录下寻找 ISO 挂载  
+
+
+
+
+
+
+
+## jiegua
+
+解除挂载用的脚本，会把能检测到的所有已挂载的 ISO 全部解除挂载
+
+![jiegua.01](https://github.com/Aniverse/filesss/raw/master/Images/jiegua.01.png)
+
+`guazai` + `jietu` + `jiegua` 三连
+
+
+
+
+
+
+
+
+## Blu-ray
+
+关于 bluray 脚本的介绍与使用，请移步到 [这里](https://github.com/Aniverse/bluray)  
+inexistence 自带 bluray，不过不包括它的软件库  
+（然而你可以直接用 inexistence 安装 ffmpeg、vcs、bdinfocli、mono、imagemagick）  
+
+
+
+
+
+
+
+## Something else
+
+还有一些脚本，比如 `zuozhong`，在此不作介绍了，基本看名字都知道是干什么用的了  
+
+1. 我不想回答 README 中已包含答案的问题  
+2. 有 bug 的话欢迎反馈，**但不保证能解决**，且有些问题可能不是本脚本造成的  
+3. 有意见或者改进也欢迎告知  
 
 如需提交 bug ，请告诉我如下的信息：  
-1. 你使用的是什么盒子   
-2. 你安装时的选项（在开始安装前那一步截图）  
+1. 具体日志，日志的查看方法在最后安装出错后会有提示  
+2. 你使用的是什么盒子  
 3. 你具体碰到了什么问题  
 
-需要注意的是有些问题可能不是本脚本造成的  
-
-  -------------------
-### Some references
+## Some references
 
 https://github.com/arakasi72/rtinst  
 https://github.com/QuickBox/QB  
-https://github.com/qbittorrent/qBittorrent/wiki  
+https://github.com/liaralabs/swizzin  
+https://github.com/qbittorrent/qBittorrent  
+https://github.com/jfurrow/flood  
 https://flexget.com  
+https://wiki.winehq.org  
+https://wiki.x2go.org  
+http://www.mono-project.com  
 https://rclone.org/install  
-http://dev.deluge-torrent.org/wiki/UserGuide  
+http://dev.deluge-torrent.org/wiki/UserGuide    
 https://mkvtoolnix.download/downloads.html  
 http://outlyer.net/etiq/projects/vcs  
-http://wilywx.com  
+https://amefs.net  
 https://www.dwhd.org  
 https://moeclub.org  
+https://sometimesnaive.org  
+https://www.94ish.me  
 https://blog.gloriousdays.pw  
+https://blog.rhilip.info  
+https://ymgblog.com  
+http://wilywx.com  
+http://xiaofd.win/onekey-ruisu.html  
+https://github.com/arfoll/unrarall  
 https://github.com/teddysun/across  
+https://github.com/FunctionClub  
 https://github.com/oooldking/script  
 https://github.com/gutenye/systemd-units  
 https://github.com/outime/ipv6-dhclient-script  
 https://github.com/jxzy199306/ipv6_dhclient_online_net  
 https://github.com/GalaxyXL/qBittorrent-autoremove  
 https://xxxxxx.org/forums/viewtopic?topicid=61434  
-
+https://github.com/superlukia/transmission-2.92_skiphashcheck  
+https://tieba.baidu.com/p/5536354634  
+https://tieba.baidu.com/p/5532509017  
+https://tieba.baidu.com/p/5158974574  
+https://serverfault.com/questions/48724/100-non-interactive-debian-dist-upgrade  
+https://github.com/Azure/azure-devops-utils  
+https://stackoverflow.com/questions/36524872/check-single-character-in-array-bash-for-password-generator  
